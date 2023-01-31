@@ -10,8 +10,6 @@ export function History() {
     <HistoryContainer>
       <h1>Meu Histórico</h1>
 
-      <pre>{JSON.stringify(cycles, null, 2)}</pre>
-
       <HistoryList>
         <table>
           <thead>
