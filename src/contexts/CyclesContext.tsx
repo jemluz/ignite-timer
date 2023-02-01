@@ -5,6 +5,7 @@ import {
   Cycle,
   CyclesContextData,
   CyclesContextProviderProps,
+  CyclesState,
 } from '../models/Cycles.interfaces'
 import {
   addNewCycleAction,
@@ -17,25 +18,16 @@ export const CyclesContext = createContext({} as CyclesContextData)
 
 const localStorageName = '@ignite-timer:cycles-state-1.0.0'
 
-function getStateFromLocalStorage() {
-  const storedStateAsJSON = localStorage.getItem(localStorageName)
-
-  if (storedStateAsJSON) {
-    return JSON.parse(storedStateAsJSON)
-  }
-}
-
 export function CyclesContextProvider({
   children,
 }: CyclesContextProviderProps) {
   const [cyclesState, dispatch] = useReducer(
     cyclesReducer,
-    {
-      cycles: [],
-      activeCycleId: null,
-    },
+    {} as CyclesState,
     () => {
-      const storedStateAsJSON = localStorage.getItem(localStorageName)
+      const storedStateAsJSON = localStorage.getItem(
+        localStorageName || ({} as CyclesState),
+      )
 
       if (storedStateAsJSON) {
         return JSON.parse(storedStateAsJSON)
@@ -43,8 +35,11 @@ export function CyclesContextProvider({
     },
   )
 
-  const { cycles, activeCycleId } = cyclesState
-  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+  const { cycles, activeCycleId } = cyclesState || ({} as CyclesState)
+
+  const activeCycle = cycles
+    ? cycles.find((cycle) => cycle.id === activeCycleId)
+    : null
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
     if (activeCycle) {
@@ -55,7 +50,7 @@ export function CyclesContextProvider({
   })
 
   useEffect(() => {
-    const stateJSON = JSON.stringify(cyclesState)
+    const stateJSON = JSON.stringify(cyclesState || ({} as CyclesState))
     localStorage.setItem(localStorageName, stateJSON)
   }, [cyclesState])
 

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { ActionTypes } from '../reducers/cycles/actions'
 
 export interface CreateCycleData {
   task: string
@@ -32,4 +33,11 @@ export interface CyclesContextProviderProps {
 export interface CyclesState {
   cycles: Cycle[]
   activeCycleId: string | null
+}
+
+export interface Action {
+  type: ActionTypes
+  payload?: {
+    newCycle: Cycle
+  }
 }
