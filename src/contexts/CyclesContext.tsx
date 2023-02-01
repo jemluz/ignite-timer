@@ -26,13 +26,13 @@ export function CyclesContextProvider({
       cycles: [],
       activeCycleId: null,
     },
-    // (initialValue) => {
-    //   const cyclesCacheJSON = localStorage.getItem(localStorageName)
+    (initialValue) => {
+      const cyclesCacheJSON = localStorage.getItem(localStorageName)
 
-    //   if (!cyclesCacheJSON) return initialValue
+      if (!cyclesCacheJSON) return initialValue
 
-    //   return JSON.parse(cyclesCacheJSON)
-    // }
+      return JSON.parse(cyclesCacheJSON)
+    },
   )
 
   const { cycles, activeCycleId } = cyclesState
