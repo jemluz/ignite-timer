@@ -32,7 +32,7 @@ export function CyclesContextProvider({
     //   if (!cyclesCacheJSON) return initialValue
 
     //   return JSON.parse(cyclesCacheJSON)
-    // },
+    // }
   )
 
   const { cycles, activeCycleId } = cyclesState
