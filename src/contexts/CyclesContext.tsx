@@ -5,7 +5,6 @@ import {
   Cycle,
   CyclesContextData,
   CyclesContextProviderProps,
-  CyclesState,
 } from '../models/Cycles.interfaces'
 import {
   addNewCycleAction,
@@ -23,23 +22,21 @@ export function CyclesContextProvider({
 }: CyclesContextProviderProps) {
   const [cyclesState, dispatch] = useReducer(
     cyclesReducer,
-    {} as CyclesState,
-    () => {
-      const storedStateAsJSON = localStorage.getItem(
-        localStorageName || ({} as CyclesState),
-      )
-
-      if (storedStateAsJSON) {
-        return JSON.parse(storedStateAsJSON)
-      }
+    {
+      cycles: [],
+      activeCycleId: null,
     },
+    // (initialValue) => {
+    //   const cyclesCacheJSON = localStorage.getItem(localStorageName)
+
+    //   if (!cyclesCacheJSON) return initialValue
+
+    //   return JSON.parse(cyclesCacheJSON)
+    // },
   )
 
-  const { cycles, activeCycleId } = cyclesState || ({} as CyclesState)
-
-  const activeCycle = cycles
-    ? cycles.find((cycle) => cycle.id === activeCycleId)
-    : null
+  const { cycles, activeCycleId } = cyclesState
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
     if (activeCycle) {
@@ -50,7 +47,7 @@ export function CyclesContextProvider({
   })
 
   useEffect(() => {
-    const stateJSON = JSON.stringify(cyclesState || ({} as CyclesState))
+    const stateJSON = JSON.stringify(cyclesState)
     localStorage.setItem(localStorageName, stateJSON)
   }, [cyclesState])
 
